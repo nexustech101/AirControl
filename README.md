@@ -11,13 +11,13 @@ Control your mouse cursor and perform click, drag, and other actions using hand 
 - **Fist Detection for Dragging**: Enables drag-and-drop actions by closing your fist.
 - **Customizable Parameters**: Adjust sensitivity, smoothing, and speed to suit your needs.
 
----
+<!-- ---
 
 ## Demo
 ![Hand Tracking Demo](demo.gif)
 - Coming soon...
 
----
+--- -->
 
 ## Technologies Used
 - **Python**: Core programming language.
