@@ -1,0 +1,20 @@
+{
+    "mouse": {
+        "smoothing_factor": 0.5,
+        "speed_multiplier": 1.5,
+        "click_threshold": 0.025,
+        "fist_detection_threshold": 0.6
+    },
+    "camera": {
+        "camera_id": 0,
+        "width": 1280,
+        "height": 720,
+        "fps": 30
+    },
+    "hand_tracking": {
+        "static_image_mode": false,
+        "max_num_hands": 1,
+        "min_detection_confidence": 0.65,
+        "min_tracking_confidence": 0.65
+    }
+}

@@ -1,7 +1,20 @@
-import cv2
-import mediapipe as mp
-import pyautogui
-import numpy as np
+"""
+AirControl - Hand Gesture Mouse Control
+
+This script demonstrates the usage of AirControl for controlling your mouse
+with hand gestures through your webcam.
+
+Usage:
+    python main.py [--config CONFIG_FILE]
+"""
+
+import argparse
+import json
+import sys
+from typing import Optional
+
+from air_control import AirControl, AirControlConfig
+from air_control.config import MouseConfig, CameraConfig, HandTrackingConfig
 
 
 class HandTrackingMouseController:
@@ -242,10 +255,70 @@ class HandTrackingMouseController:
         cv2.destroyAllWindows()
 
 
-# Example usage
+def load_config(config_file: Optional[str] = None) -> AirControlConfig:
+    """Load configuration from file or use defaults.
+    
+    Args:
+        config_file: Optional path to JSON config file
+        
+    Returns:
+        AirControlConfig object
+    """
+    config = AirControlConfig()
+    
+    if config_file:
+        try:
+            with open(config_file, 'r') as f:
+                data = json.load(f)
+                
+            if 'mouse' in data:
+                config.mouse = MouseConfig(**data['mouse'])
+            if 'camera' in data:
+                config.camera = CameraConfig(**data['camera'])
+            if 'hand_tracking' in data:
+                config.hand_tracking = HandTrackingConfig(**data['hand_tracking'])
+                
+        except Exception as e:
+            print(f"Error loading config file: {e}")
+            print("Using default configuration")
+    
+    return config
+
+def main():
+    """Main entry point for the application."""
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='AirControl - Hand Gesture Mouse Control')
+    parser.add_argument('--config', type=str, help='Path to configuration file')
+    args = parser.parse_args()
+    
+    try:
+        # Load configuration
+        config = load_config(args.config)
+        
+        # Create and run the controller
+        print("Starting AirControl...")
+        print("Press 'q' to quit")
+        print("\nGesture Guide:")
+        print("- Move index finger: Move mouse cursor")
+        print("- Pinch index finger and thumb: Left click")
+        print("- Pinch pinky finger and thumb: Right click")
+        print("- Make a fist: Drag")
+        
+        controller = AirControl(config)
+        controller.run()
+        
+    except KeyboardInterrupt:
+        print("\nExiting...")
+        sys.exit(0)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
 if __name__ == "__main__":
-    controller = HandTrackingMouseController(
-        smoothing_factor=0.01,  # Smoothing factor for mouse movements
-        speed_multiplier=1.5   # Speed factor for mouse movements
-    )
-    controller.run()
+    import cv2
+    import mediapipe as mp
+    import pyautogui
+    import numpy as np
+    from air_control import AirControl, AirControlConfig
+    from air_control.config import MouseConfig, CameraConfig, HandTrackingConfig
+    main()
